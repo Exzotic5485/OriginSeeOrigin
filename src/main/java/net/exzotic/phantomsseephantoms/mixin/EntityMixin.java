@@ -22,10 +22,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.Collection;
+
 @Mixin(Entity.class)
 public abstract class EntityMixin {
-
-    @Shadow public abstract World getWorld();
 
     @Inject(method = "isInvisibleTo", at = @At("HEAD"), cancellable = true)
     public void phantomseephantoms$isInvisibleTo(PlayerEntity player, CallbackInfoReturnable<Boolean> cir){
@@ -34,6 +34,11 @@ public abstract class EntityMixin {
 
             Identifier layerId = new Identifier("origins:origin");
             Identifier originId = new Identifier("origins:phantom");
+
+            Collection<OriginLayer> layers = OriginLayers.getLayers();
+
+            if(!layers.contains(layerId)) return;
+
             OriginLayer layer = OriginLayers.getLayer(layerId);
 
             OriginComponent component = ModComponents.ORIGIN.get(entity);
@@ -54,7 +59,6 @@ public abstract class EntityMixin {
 
             if(PhantomsSeePhantoms.SEE_INVISIBLE.isActive(entity) && PhantomsSeePhantoms.SEE_INVISIBLE.isActive(player)){
                 cir.setReturnValue(false);
-                return;
             }
         }
     }
