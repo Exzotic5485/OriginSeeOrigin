@@ -15,7 +15,7 @@ public class PhantomsSeePhantoms implements ModInitializer {
     public static final String MODID = "phantomsseephantoms";
     public static final Logger LOGGER = LoggerFactory.getLogger(MODID);
 
-    public static final PowerType<Power> SEE_INVISIBLE = new PowerTypeReference<>(new Identifier(MODID, "see_invisible"));
+    public static final PowerType<Power> SEE_INVISIBLE = new PowerTypeReference<>(Identifier.of(MODID, "see_invisible"));
 
     @Override
     public void onInitialize() {
