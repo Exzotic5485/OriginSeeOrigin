@@ -19,9 +19,6 @@ public class PhantomsSeePhantoms implements ModInitializer {
 
     @Override
     public void onInitialize() {
-
         LOGGER.info("Phantoms now see phantoms!");
-
-
     }
 }

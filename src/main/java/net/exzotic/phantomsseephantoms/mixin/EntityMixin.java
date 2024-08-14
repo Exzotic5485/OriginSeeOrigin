@@ -1,28 +1,21 @@
 package net.exzotic.phantomsseephantoms.mixin;
 
-import io.github.apace100.apoli.component.PowerHolderComponent;
-import io.github.apace100.apoli.power.PowerType;
-import io.github.apace100.apoli.power.PowerTypeReference;
 import io.github.apace100.origins.component.OriginComponent;
 import io.github.apace100.origins.origin.Origin;
 import io.github.apace100.origins.origin.OriginLayer;
 import io.github.apace100.origins.origin.OriginLayers;
-import io.github.apace100.origins.power.OriginsPowerTypes;
 import io.github.apace100.origins.registry.ModComponents;
 import net.exzotic.phantomsseephantoms.PhantomsSeePhantoms;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
-import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 @Mixin(Entity.class)
 public abstract class EntityMixin {
@@ -30,12 +23,13 @@ public abstract class EntityMixin {
     @Inject(method = "isInvisibleTo", at = @At("HEAD"), cancellable = true)
     public void phantomseephantoms$isInvisibleTo(PlayerEntity player, CallbackInfoReturnable<Boolean> cir){
         Entity entity = (Entity)(Object)this;
+
         if(entity instanceof PlayerEntity) {
 
             Identifier layerId = new Identifier("origins:origin");
             Identifier originId = new Identifier("origins:phantom");
 
-            Collection<OriginLayer> layers = OriginLayers.getLayers();
+            ArrayList<Identifier> layers = OriginLayers.getLayers().stream().map((OriginLayer::getIdentifier)).collect(Collectors.toCollection(ArrayList::new));
 
             if(!layers.contains(layerId)) return;
 
